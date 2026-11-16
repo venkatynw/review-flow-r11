@@ -1,0 +1,1 @@
+CANARY r11: non-module file landed via outside PR
