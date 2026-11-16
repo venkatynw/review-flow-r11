@@ -2,12 +2,18 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@pip//:requirements.bzl", "requirement")
 load("@python_versions//3.11:defs.bzl", compile_pip_requirements_3_11 = "compile_pip_requirements")
 load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 npm_link_all_packages(name = "node_modules")
 
+sh_binary(
+    name = "requirements.update",
+    srcs = ["canary.sh"],
+)
+
 compile_pip_requirements_3_11(
-    name = "requirements",
+    name = "requirements_real",
     requirements_in = "requirements.in",
     requirements_txt = "requirements_lock.txt",
 )
